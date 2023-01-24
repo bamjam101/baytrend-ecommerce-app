@@ -44,7 +44,7 @@ const Layout = () => {
       <main>
         <Outlet />
       </main>
-      <footer>footer</footer>
+      <footer></footer>
     </ThemeProvider>
   );
 };

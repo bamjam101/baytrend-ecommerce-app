@@ -24,9 +24,8 @@ const Home = () => {
   const state = useSelector((state) => state.products);
   const { value: products, loading } = state ?? {};
 
-  const { searchParams } = useSearchParams();
-  const category = searchParams?.get("category");
-  console.log(category);
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
   let filteredProducts =
     category && category !== "all"
       ? products?.filter((product) => product.category === category)

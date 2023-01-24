@@ -7,6 +7,8 @@ import { MenuItem, Select } from "@mui/material";
 import { fetchAllCategories } from "../feature/categories-slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const Search = styled("section")(({ theme }) => ({
   position: "relative",
@@ -24,6 +26,9 @@ const Search = styled("section")(({ theme }) => ({
 }));
 
 const Searchbar = () => {
+  const [searchParams] = useSearchParams();
+  const category = searchParams?.get("category");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products?.value);
@@ -36,9 +41,26 @@ const Searchbar = () => {
 
   function handleCategoryChange(event) {
     const value = event.target.value;
-    setSelectedCategory(value);
     navigate(value === "all" ? "/" : `/?category=${value}`);
   }
+
+  function handleSearchChange(searchText) {
+    if (searchText) {
+      navigate(
+        selectedCategory === "all"
+          ? `?searchterm=${searchText}`
+          : `/?category=${selectedCategory}&searchterm=${searchText}`
+      );
+    } else {
+      navigate(
+        selectedCategory === "all" ? `/` : `/?category=${selectedCategory}`
+      );
+    }
+  }
+
+  useEffect(() => {
+    setSelectedCategory(category ? category : "all");
+  }, [category]);
   return (
     <Search>
       <Select
@@ -69,12 +91,22 @@ const Searchbar = () => {
       <Autocomplete
         disablePortal
         id="combo-box-demo"
-        options={Array.from(products, (prod) => ({
-          id: prod.id,
-          label: prod.title,
-        }))}
+        options={Array.from(
+          selectedCategory === "all"
+            ? products
+            : products.filter(
+                (product) => product.category === selectedCategory
+              ),
+          (prod) => ({
+            id: prod.id,
+            label: prod.title,
+          })
+        )}
         sx={{ width: "100%" }}
         renderInput={(params) => <TextField {...params} label="Products" />}
+        onChange={(e, value) => {
+          handleSearchChange(value?.label);
+        }}
       />
     </Search>
   );
