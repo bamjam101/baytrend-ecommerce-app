@@ -15,15 +15,22 @@ import {
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../feature/cart-slice";
 
 const Home = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   async function fetchAllProducts() {
     const response = await fetch("https://fakestoreapi.com/products");
     const result = await response.json();
     setProducts(result);
   }
+
+  const addProductToCart = (product) => {
+    dispatch(addToCart({ product, quantity: 1 }));
+  };
 
   useEffect(() => {
     fetchAllProducts();
@@ -81,7 +88,19 @@ const Home = () => {
                 <Rating readOnly precision={0.5} value={rating.rate} />
               </CardContent>
               <CardActions sx={{ alignSelf: "center" }}>
-                <Button size="medium">
+                <Button
+                  size="medium"
+                  onClick={() =>
+                    addProductToCart({
+                      title,
+                      id,
+                      image,
+                      price,
+                      description,
+                      rating,
+                    })
+                  }
+                >
                   <ShoppingCartRounded />
                   Add To Cart
                 </Button>

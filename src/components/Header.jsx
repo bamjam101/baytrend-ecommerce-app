@@ -10,8 +10,12 @@ import {
 } from "@mui/material";
 import { ShoppingCartOutlined } from "@mui/icons-material";
 import React from "react";
+import { getItemCount } from "../utils";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const cartItems = useSelector((state) => state.cart?.value);
+  const count = getItemCount(cartItems);
   return (
     <AppBar position="sticky">
       <Toolbar>
@@ -35,7 +39,7 @@ const Header = () => {
               }
             `}
           >
-            <Badge badgeContent={1} color="error">
+            <Badge badgeContent={count} color="error">
               <ShoppingCartOutlined />
             </Badge>
           </IconButton>
