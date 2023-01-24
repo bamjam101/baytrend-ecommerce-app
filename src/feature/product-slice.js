@@ -8,7 +8,8 @@ export const fetchAllProducts = createAsyncThunk("products/fetchAll", async () =
 const productsSlice = createSlice({
     name: "products",
     initialState: {
-        value: []
+        value: [],
+        loading: false
     },
     extraReducers: (builder) => {
         builder.addCase(fetchAllProducts.pending, (state) => {
@@ -17,7 +18,7 @@ const productsSlice = createSlice({
         builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
             state.value = action.payload;
             state.loading = false;
-        })
+        });
     }
 });
 
