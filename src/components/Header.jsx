@@ -12,6 +12,7 @@ import { ShoppingCartOutlined } from "@mui/icons-material";
 import React from "react";
 import { getItemCount } from "../utils";
 import { useSelector } from "react-redux";
+import Searchbar from "./Searchbar";
 
 const Header = () => {
   const cartItems = useSelector((state) => state.cart?.value);
@@ -26,8 +27,9 @@ const Header = () => {
             flex-grow: 1;
           `}
         >
-          Ecomm App
+          BayTrend
         </Typography>
+        <Searchbar />
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: "1rem" }}>
           <IconButton
             size="large"

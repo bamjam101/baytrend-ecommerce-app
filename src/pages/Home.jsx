@@ -15,26 +15,23 @@ import {
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../feature/cart-slice";
+import { fetchAllProducts } from "../feature/product-slice";
 
 const Home = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [products, setProducts] = useState([]);
-  async function fetchAllProducts() {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const result = await response.json();
-    setProducts(result);
-  }
+  const state = useSelector((state) => state.products);
+  const { value: products, loading } = state ?? {};
 
   const addProductToCart = (product) => {
     dispatch(addToCart({ product, quantity: 1 }));
   };
 
-  useEffect(() => {
-    fetchAllProducts();
-  }, []);
+  if (!products?.length) {
+    dispatch(fetchAllProducts());
+  }
   return (
     <Container sx={{ py: 8 }} maxWidth="lg">
       <Grid container spacing={4}>
