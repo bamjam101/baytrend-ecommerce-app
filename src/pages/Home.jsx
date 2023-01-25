@@ -26,10 +26,16 @@ const Home = () => {
 
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
+  const searchTerm = searchParams.get("searchterm");
   let filteredProducts =
     category && category !== "all"
       ? products?.filter((product) => product.category === category)
       : products;
+  filteredProducts = searchTerm
+    ? filteredProducts.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : filteredProducts;
 
   const addProductToCart = (product) => {
     dispatch(addToCart({ product, quantity: 1 }));

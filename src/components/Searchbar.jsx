@@ -9,25 +9,56 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import { useTheme } from "@emotion/react";
+import { SearchOutlined } from "@mui/icons-material";
 
-const Search = styled("section")(({ theme }) => ({
+const StyledSearch = styled("section")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
+  display: "grid",
+  placeItems: "center",
+  gridTemplateColumns: "minmax(100px, 15%) 1fr",
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
-  marginLeft: "0",
-  width: "70%",
+  width: "80%",
+}));
+
+const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
+  color: "inherit",
+  width: "100%",
+  "& .MuiTextField-root": {
+    paddingRight: `calc(1em + ${theme.spacing(4)})`,
+  },
+  "& .MuiInputBase-input": {
+    color: theme.palette.common.white,
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    // border: "2px solid transparent",
+  },
+  "& .MuiSvgIcon-root": {
+    fill: theme.palette.common.white,
+  },
+}));
+
+const SearchIconWrapper = styled("section")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  right: "0",
+  pointerEvents: "none",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 }));
 
 const Searchbar = () => {
+  const theme = useTheme();
   const [searchParams] = useSearchParams();
-  const category = searchParams?.get("category");
+  const category = searchParams.get("category");
+  const searchTerm = searchParams.get("searchTerm");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,10 +69,15 @@ const Searchbar = () => {
   }
 
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   function handleCategoryChange(event) {
     const value = event.target.value;
-    navigate(value === "all" ? "/" : `/?category=${value}`);
+    navigate(
+      value === "all"
+        ? "/"
+        : `/?category=${value}${searchTerm ? "&searchterm=" + searchTerm : ""}`
+    );
   }
 
   function handleSearchChange(searchText) {
@@ -62,13 +98,29 @@ const Searchbar = () => {
     setSelectedCategory(category ? category : "all");
   }, [category]);
   return (
-    <Search>
+    <StyledSearch>
       <Select
         value={selectedCategory}
         size="small"
         sx={{
           m: 1,
           textTransform: "capitalize",
+          "&": {
+            "::before": {
+              ":hover": {
+                border: "none",
+              },
+            },
+            "::before, &::after": {
+              border: "none",
+            },
+            ".MuiSelect-standard": {
+              color: "common.white",
+            },
+            ".MuiSelect-icon": {
+              fill: theme.palette.common.white,
+            },
+          },
         }}
         variant="standard"
         labelId="selected-category"
@@ -88,9 +140,11 @@ const Searchbar = () => {
           </MenuItem>
         ))}
       </Select>
-      <Autocomplete
+      <StyledAutoComplete
+        freeSolo
+        id="selected-product"
+        value={selectedProduct}
         disablePortal
-        id="combo-box-demo"
         options={Array.from(
           selectedCategory === "all"
             ? products
@@ -102,13 +156,21 @@ const Searchbar = () => {
             label: prod.title,
           })
         )}
-        sx={{ width: "100%" }}
-        renderInput={(params) => <TextField {...params} label="Products" />}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={selectedProduct ? "Product" : "Products"}
+          />
+        )}
         onChange={(e, value) => {
           handleSearchChange(value?.label);
+          setSelectedProduct(value?.label);
         }}
       />
-    </Search>
+      <SearchIconWrapper>
+        <SearchOutlined />
+      </SearchIconWrapper>
+    </StyledSearch>
   );
 };
 
