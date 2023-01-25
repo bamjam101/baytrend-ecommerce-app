@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 
 const StyledLink = styled(Link)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -24,6 +25,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 const Header = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const cartItems = useSelector((state) => state.cart?.value);
   const count = getItemCount(cartItems);
 
@@ -53,9 +55,10 @@ const Header = () => {
             size="large"
             aria-label="Shows cart items count"
             sx={css`
-              transition: background-color 0.45s;
+              transition: background-color 0.45s, color 0.45s;
               &:hover {
-                background-color: white;
+                background-color: ${theme.palette.common.white};
+                color: ${theme.palette.common.black};
               }
             `}
             onClick={navigateToCart}

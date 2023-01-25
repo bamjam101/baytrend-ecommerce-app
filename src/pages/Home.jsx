@@ -98,7 +98,7 @@ const Home = () => {
                   >
                     {description}
                   </Typography>
-                  <Typography paragraph>{`$ ${price}`}</Typography>
+                  <Typography paragraph>{`$${price}`}</Typography>
                   <Rating readOnly precision={0.5} value={rating.rate} />
                 </CardContent>
                 <CardActions sx={{ alignSelf: "center" }}>

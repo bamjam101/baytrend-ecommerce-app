@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { Provider } from "react-redux";
 import store from "./store";
+import Checkout from "./pages/Checkout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,7 +21,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/login" element={<Login />} />
-      <Route path="signup" element={<SignUp />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/checkout" element={<Checkout />} />
     </Route>
   )
 );
