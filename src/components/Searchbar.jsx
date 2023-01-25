@@ -11,6 +11,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import { SearchOutlined } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const StyledSearch = styled("section")(({ theme }) => ({
   position: "relative",
