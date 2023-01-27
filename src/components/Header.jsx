@@ -111,10 +111,14 @@ const Header = () => {
             {user ? (
               <Button size="small" color="inherit" onClick={handleMenuOpen}>
                 <AccountCircleRounded />
-                {user.displayName ? displayName : user.email}
+                {user.displayName ?? user.email}
               </Button>
             ) : (
-              <Button size="large" color="inherit">
+              <Button
+                size="large"
+                color="inherit"
+                onClick={() => navigate("/login")}
+              >
                 Login
               </Button>
             )}

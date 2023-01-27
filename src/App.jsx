@@ -13,7 +13,17 @@ import SignUp from "./pages/SignUp";
 import { Provider } from "react-redux";
 import store from "./store";
 import Checkout from "./pages/Checkout";
-import { AuthProvider } from "./firebase/Auth";
+import { AuthProvider, useAuth } from "./firebase/Auth";
+import { Navigate } from "react-router-dom";
+import Register from "./pages/Register";
+
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) {
+    return <Navigate to={"/login"} />;
+  }
+  return children;
+};
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,9 +32,17 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
       </Route>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </>
   )
 );

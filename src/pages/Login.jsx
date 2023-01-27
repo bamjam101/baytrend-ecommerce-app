@@ -5,30 +5,39 @@ import {
   Button,
   Container,
   CssBaseline,
+  Grid,
   TextField,
   Typography,
   useTheme,
 } from "@mui/material";
 import React from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../firebase/Auth";
 
 const Login = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { user, signIn } = useAuth();
   async function login(event) {
     event.preventDefault();
     const { email, password } = event.target;
     await signIn(email.value, password.value);
     navigate("/");
   }
+
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/");
+  //   }
+  // }, [user]);
   return (
     <Container component={"main"} maxWidth="xs">
       <CssBaseline />
       <Box
         xs={{
-          mt: theme.spacing(8),
+          marginTop: "8rem",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -49,7 +58,7 @@ const Login = () => {
         <form
           sx={{
             widht: "100%",
-            mt: 1,
+            mt: "1rem",
           }}
           onSubmit={login}
         >
@@ -87,6 +96,13 @@ const Login = () => {
             Submit
           </Button>
         </form>
+        <Grid container justifyContent={"center"}>
+          <Grid item>
+            <Typography paragraph>
+              New User? Go to <Link to={"/register"}>Sign Up</Link>
+            </Typography>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );
