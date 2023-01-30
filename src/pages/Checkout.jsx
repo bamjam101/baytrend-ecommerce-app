@@ -1,7 +1,101 @@
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography,
+} from "@mui/material";
 import React from "react";
+import { useState } from "react";
+import AddressForm from "../components/AddressForm";
+import PaymentForm from "../components/PaymentForm";
+
+const steps = ["Shipping Address", "Payment Details", "Review Order"];
+
+const getStepContent = (activeStep) => {
+  switch (activeStep) {
+    case 0:
+      return <AddressForm />;
+    case 1:
+      return <PaymentForm />;
+    case 2:
+      return <h1>Review</h1>;
+    default:
+      throw new Error("Unknown Step");
+  }
+};
 
 const Checkout = () => {
-  return <div>Checkout</div>;
+  const [activeStep, setActiveStep] = useState(0);
+
+  function handleNext() {
+    setActiveStep(activeStep + 1);
+  }
+  function handleBack() {
+    setActiveStep(activeStep !== 0 ? activeStep - 1 : activeStep);
+  }
+  return (
+    <Container component={"section"} maxWidth="lg" sx={{ mb: 4 }}>
+      <Paper
+        variant="outlined"
+        sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+      >
+        <Typography component={"h1"} variant="h4" align="center">
+          Checkout
+        </Typography>
+        <Stepper
+          activeStep={activeStep}
+          sx={{
+            pt: 3,
+            pb: 5,
+          }}
+        >
+          {steps?.map((step) => (
+            <Step key={step}>
+              <StepLabel>{step}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length ? (
+          <>
+            <Typography variant="h5" gutterBottom>
+              Thank you for your order.
+            </Typography>
+            <Typography variant="h5" gutterBottom>
+              Your order number is {Math.random()}. We have shared the details
+              of the order and dispatch on your registered email.
+            </Typography>
+          </>
+        ) : (
+          <>
+            {getStepContent(activeStep)}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              {activeStep !== 0 ? (
+                <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                  Back
+                </Button>
+              ) : null}
+              <Button
+                variant="contained"
+                onClick={handleNext}
+                sx={{ mt: 3, ml: 1 }}
+              >
+                {activeStep === steps.length - 1 ? "Place Order" : "Next"}
+              </Button>
+            </Box>
+          </>
+        )}
+      </Paper>
+    </Container>
+  );
 };
 
 export default Checkout;
