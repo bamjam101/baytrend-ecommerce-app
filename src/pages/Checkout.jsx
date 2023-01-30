@@ -9,9 +9,15 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import AddressForm from "../components/AddressForm";
 import PaymentForm from "../components/PaymentForm";
+import ReviewForm from "../components/ReviewForm";
+import { clearCart } from "../feature/cart-slice";
+import { clearCheckoutInformation } from "../feature/checkout-slice";
 
 const steps = ["Shipping Address", "Payment Details", "Review Order"];
 
@@ -22,14 +28,22 @@ const getStepContent = (activeStep) => {
     case 1:
       return <PaymentForm />;
     case 2:
-      return <h1>Review</h1>;
+      return <ReviewForm />;
     default:
       throw new Error("Unknown Step");
   }
 };
 
 const Checkout = () => {
+  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (activeStep === steps.length) {
+      dispatch(clearCart());
+      dispatch(clearCheckoutInformation());
+    }
+  }, [activeStep]);
 
   function handleNext() {
     setActiveStep(activeStep + 1);
@@ -67,6 +81,12 @@ const Checkout = () => {
             <Typography variant="h5" gutterBottom>
               Your order number is {Math.random()}. We have shared the details
               of the order and dispatch on your registered email.
+            </Typography>
+            <Typography
+              sx={{ display: "flex", justifyContent: "center" }}
+              fullWidth
+            >
+              <Link to="/">Shop more...</Link>
             </Typography>
           </>
         ) : (
