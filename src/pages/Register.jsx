@@ -11,7 +11,6 @@ import {
   useTheme,
 } from "@mui/material";
 import React from "react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAuth } from "../firebase/Auth";
@@ -19,7 +18,7 @@ import { useAuth } from "../firebase/Auth";
 const Register = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { user, signUp } = useAuth();
+  const { signUp } = useAuth();
 
   async function registerUser(e) {
     e.preventDefault();
@@ -30,11 +29,6 @@ const Register = () => {
       data.get("name")
     ).then(() => navigate("/login"));
   }
-  //   useEffect(() => {
-  //     if (user) {
-  //       navigate("/");
-  //     }
-  //   }, [user]);
   return (
     <Container component={"main"} maxWidth="xs">
       <CssBaseline />

@@ -37,7 +37,7 @@ const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   "& .MuiOutlinedInput-notchedOutline": {
-    // border: "2px solid transparent",
+    borderWidth: "0",
   },
   "& .MuiSvgIcon-root": {
     fill: theme.palette.common.white,

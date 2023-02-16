@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useTheme } from "@emotion/react";
 import { ShoppingCartRounded } from "@mui/icons-material";
 import {
@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { addToCart } from "../feature/cart-slice";
 import { fetchAllProducts } from "../feature/product-slice";
+import Loader from "../components/Loader";
+import { useState } from "react";
 
 const Home = () => {
   const theme = useTheme();
@@ -124,6 +126,7 @@ const Home = () => {
           )
         )}
       </Grid>
+      {loading && <Loader />}
     </Container>
   );
 };

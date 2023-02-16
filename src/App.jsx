@@ -1,21 +1,22 @@
-import React from "react";
+import React, { lazy } from "react";
 import {
   Route,
   createRoutesFromElements,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import Cart from "./pages/Cart";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 import { Provider } from "react-redux";
 import store from "./store";
-import Checkout from "./pages/Checkout";
 import { AuthProvider, useAuth } from "./firebase/Auth";
 import { Navigate } from "react-router-dom";
-import Register from "./pages/Register";
+
+import Loader from "./components/Loader";
+const Checkout = lazy(() => import("./pages/Checkout"));
+const Register = lazy(() => import("./pages/Register"));
+const Home = lazy(() => import("./pages/Home"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Login = lazy(() => import("./pages/Login"));
+const Layout = lazy(() => import("./components/Layout"));
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
@@ -31,7 +32,6 @@ const router = createBrowserRouter(
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route
           path="/checkout"
           element={
@@ -51,7 +51,9 @@ function App() {
   return (
     <AuthProvider>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <React.Suspense fallback={<Loader />}>
+          <RouterProvider router={router} />
+        </React.Suspense>
       </Provider>
     </AuthProvider>
   );

@@ -19,7 +19,7 @@ import { useAuth } from "../firebase/Auth";
 const Login = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { user, signIn } = useAuth();
+  const { signIn, user } = useAuth();
   async function login(event) {
     event.preventDefault();
     const { email, password } = event.target;
@@ -27,11 +27,11 @@ const Login = () => {
     navigate("/");
   }
 
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/");
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
   return (
     <Container component={"main"} maxWidth="xs">
       <CssBaseline />
