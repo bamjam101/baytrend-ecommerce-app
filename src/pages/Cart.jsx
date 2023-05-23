@@ -48,15 +48,22 @@ const Cart = () => {
                 <Card
                   sx={{
                     display: "grid",
-                    gridTemplateColumns: "minmax(250px, 25%) 1fr",
+                    gridTemplateColumns: {
+                      xs: "none",
+                      lg: "minmax(250px, 25%) 1fr",
+                    },
                   }}
                 >
                   <CardMedia
                     component="img"
                     image={image}
                     sx={{
-                      width: theme.spacing(30),
-                      height: theme.spacing(30),
+                      width: {
+                        lg: theme.spacing(30),
+                      },
+                      height: {
+                        lg: theme.spacing(30),
+                      },
                       objectFit: "contain",
                       padding: theme.spacing(),
                       background: theme.palette.common.white,

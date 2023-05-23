@@ -37,7 +37,6 @@ const Home = () => {
         product.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : filteredProducts;
-
   const addProductToCart = (product) => {
     dispatch(addToCart({ product, quantity: 1 }));
   };

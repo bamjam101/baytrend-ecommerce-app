@@ -61,8 +61,6 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );
@@ -78,7 +76,7 @@ const Header = () => {
         <Toolbar
           sx={{
             display: "flex",
-            gap: 2,
+            gap: { xs: 1, md: 2 },
           }}
         >
           <Typography
@@ -88,12 +86,14 @@ const Header = () => {
               flex-grow: 1;
             `}
           >
-            <StyledLink to="/">BayTrend</StyledLink>
+            <StyledLink sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }} to="/">
+              BayTrend
+            </StyledLink>
           </Typography>
           <Searchbar />
-          <Box sx={{ display: { xs: "none", md: "flex" }, gap: "1rem" }}>
+          <Box sx={{ display: "flex", gap: "1rem" }}>
             <IconButton
-              size="large"
+              size="small"
               aria-label="Shows cart items count"
               sx={css`
                 transition: background-color 0.45s, color 0.45s;
@@ -109,7 +109,15 @@ const Header = () => {
               </Badge>
             </IconButton>
             {user ? (
-              <Button size="small" color="inherit" onClick={handleMenuOpen}>
+              <Button
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  gap: "0.5rem",
+                }}
+                size="small"
+                color="inherit"
+                onClick={handleMenuOpen}
+              >
                 <AccountCircleRounded />
                 {user.displayName ?? user.email}
               </Button>
@@ -117,6 +125,7 @@ const Header = () => {
               <Button
                 size="large"
                 color="inherit"
+                sx={{ display: { xs: "none", md: "flex" } }}
                 onClick={() => navigate("/login")}
               >
                 Login

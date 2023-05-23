@@ -11,14 +11,13 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import { SearchOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
 
 const StyledSearch = styled("section")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   display: "grid",
   placeItems: "center",
-  gridTemplateColumns: "minmax(100px, 15%) 1fr",
+  gridTemplateColumns: "minmax(50px, 10%) 1fr",
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -41,6 +40,9 @@ const StyledAutoComplete = styled(Autocomplete)(({ theme }) => ({
   },
   "& .MuiSvgIcon-root": {
     fill: theme.palette.common.white,
+  },
+  "& #selected-product-label": {
+    fontSize: { xs: "0.5rem", md: "1rem" },
   },
 }));
 
@@ -104,6 +106,7 @@ const Searchbar = () => {
         value={selectedCategory}
         size="small"
         sx={{
+          fontSize: { xs: "0.8rem", md: "1.2rem" },
           m: 1,
           textTransform: "capitalize",
           "&": {
